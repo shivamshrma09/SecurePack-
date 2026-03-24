@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+
+/* ── Base layout classes ── */
+.vuln-header   { display: flex; gap: 16px; align-items: flex-start; padding: 14px 20px; background: #111; }
+.vuln-id-col   { min-width: 200px; }
+.vuln-score-col{ min-width: 100px; text-align: right; flex-shrink: 0; }
+.vuln-summary  { flex: 1; color: #9ca3af; font-size: 12px; line-height: 1.7; }
+.fixed-pills   { display: flex; flex-wrap: wrap; gap: 6px; }
+.pkg-row-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+
+  /* Navbar */
+  .nav-links     { display: none !important; }
+  .nav-subscribe { padding: 6px 12px !important; font-size: 12px !important; }
+
+  /* Hero */
+  .hero-title { font-size: 32px !important; }
+
+  /* Search */
+  .search-btn { padding: 12px 16px !important; font-size: 13px !important; }
+
+  /* File scan grid — 2 cols */
+  .file-grid      { grid-template-columns: 1fr 100px !important; }
+  .file-grid-hide { display: none !important; }
+
+  /* GeminiChat */
+  .gemini-panel { width: 100vw !important; }
+
+  /* Compare columns */
+  .compare-col { flex: 0 0 300px !important; width: 300px !important; }
+
+  /* Vuln detail — stack vertically on mobile */
+  .vuln-header    { flex-direction: column !important; gap: 8px !important; padding: 12px 14px !important; }
+  .vuln-id-col    { min-width: unset !important; width: 100% !important; }
+  .vuln-score-col { min-width: unset !important; text-align: left !important; }
+  .vuln-summary   { padding: 0 !important; }
+
+  /* Reduce padding on inner sections */
+  .section-label { padding: 7px 14px !important; }
+  .epss-wrap     { padding: 0 14px 10px !important; }
+  .refs-toggle   { padding: 8px 14px !important; }
+  .refs-list     { padding: 0 14px 10px !important; }
+  .fixed-in-row  { padding: 8px 14px !important; }
+}
+
+@media (max-width: 480px) {
+  .hero-title   { font-size: 26px !important; }
+  .gemini-panel { width: 100vw !important; }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "email": "shivamsharma27107@gmail.com",
+    "purl": "pkg:maven/log4j/log4j@1.2.27",
+    "subscribedAt": "2026-03-24T17:31:07.975Z"
+  },
+  {
+    "email": "shivamsharma27107@gmail.com",
+    "purl": "node backend/server.js",
+    "subscribedAt": "2026-03-24T17:32:33.453Z"
+  }
+]
