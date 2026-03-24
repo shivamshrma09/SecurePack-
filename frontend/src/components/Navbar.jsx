@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import SubscribeModal from './SubscribeModal'
+import SocialModal from './SocialModal'
 
 const NAV = [
   { label: 'Search',          path: '/' },
   { label: 'Compare Package', path: '/compare_package' },
+  { label: 'Social',          social: true },
   { label: 'Docs',            href: 'https://vulnerablecode.readthedocs.io/en/latest/' },
 ]
 
@@ -12,6 +14,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [showSubscribe, setShowSubscribe] = useState(false)
+  const [showSocial, setShowSocial] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -31,7 +34,7 @@ export default function Navbar() {
 
         {/* Desktop nav links */}
         <div className="nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          {NAV.map(({ label, path, href }) =>
+          {NAV.map(({ label, path, href, social }) =>
             href ? (
               <a key={label} href={href} target="_blank" rel="noreferrer"
                 style={{ color: 'rgba(255,255,255,0.55)', fontSize: '13px', textDecoration: 'none', transition: 'color 0.15s' }}
@@ -39,6 +42,13 @@ export default function Navbar() {
                 onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}>
                 {label}
               </a>
+            ) : social ? (
+              <span key={label} onClick={() => setShowSocial(true)}
+                style={{ color: 'rgba(255,255,255,0.55)', fontSize: '13px', cursor: 'pointer', whiteSpace: 'nowrap', borderBottom: '1px solid transparent', paddingBottom: '2px', transition: 'color 0.15s' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'white'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}>
+                {label}
+              </span>
             ) : (
               <span key={label} onClick={() => navigate(path)}
                 style={{
@@ -82,13 +92,18 @@ export default function Navbar() {
             borderRadius: '12px', padding: '8px', zIndex: 100,
             display: 'flex', flexDirection: 'column', gap: '2px'
           }}>
-            {NAV.map(({ label, path, href }) =>
+            {NAV.map(({ label, path, href, social }) =>
               href ? (
                 <a key={label} href={href} target="_blank" rel="noreferrer"
                   onClick={() => setMenuOpen(false)}
                   style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', textDecoration: 'none', padding: '10px 14px', borderRadius: '8px' }}>
                   {label}
                 </a>
+              ) : social ? (
+                <span key={label} onClick={() => { setShowSocial(true); setMenuOpen(false) }}
+                  style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', cursor: 'pointer', padding: '10px 14px', borderRadius: '8px' }}>
+                  {label}
+                </span>
               ) : (
                 <span key={label} onClick={() => { navigate(path); setMenuOpen(false) }}
                   style={{
@@ -105,6 +120,7 @@ export default function Navbar() {
       </nav>
 
       {showSubscribe && <SubscribeModal onClose={() => setShowSubscribe(false)} />}
+      {showSocial && <SocialModal onClose={() => setShowSocial(false)} />}
 
       <style>{`
         @media (max-width: 768px) {
