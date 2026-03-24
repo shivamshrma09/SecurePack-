@@ -8,8 +8,13 @@ const Subscription = require('./models/Subscription')
 const app = express()
 const PORT = process.env.PORT || 4000
 const MONGO_URI = process.env.MONGO_URI
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
 
-app.use(cors())
+app.use(cors({
+  origin: FRONTEND_URL,
+  methods: ['GET', 'POST'],
+  credentials: true
+}))
 app.use(express.json())
 
 mongoose.connect(MONGO_URI)
