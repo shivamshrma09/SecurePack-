@@ -3,12 +3,14 @@ require('dotenv').config({ path: __dirname + '/.env' })
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const axios = require('axios')
 const Subscription = require('./models/Subscription')
 
 const app = express()
 const PORT = process.env.PORT || 4000
 const MONGO_URI = process.env.MONGO_URI
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
+const VC_TOKEN = process.env.VULNERABLECODE_TOKEN
 
 app.use(cors({
   origin: FRONTEND_URL,
@@ -21,15 +23,15 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error:', err))
 
-const axios = require('axios')
-
 // Proxy for VulnerableCode API (CORS fix)
 app.get('/vulnerablecode/*', async (req, res) => {
   try {
     const path = req.params[0]
     const query = new URLSearchParams(req.query).toString()
     const url = `https://public.vulnerablecode.io/api/${path}${query ? '?' + query : ''}`
-    const response = await axios.get(url)
+    const response = await axios.get(url, {
+      headers: { 'Authorization': `Token ${VC_TOKEN}` }
+    })
     res.json(response.data)
   } catch (err) {
     res.status(err.response?.status || 500).json({ error: 'Proxy error' })
