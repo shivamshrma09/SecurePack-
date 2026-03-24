@@ -26,7 +26,7 @@ export default function Navbar() {
         {/* Logo */}
         <h1 onClick={() => { navigate('/'); setMenuOpen(false) }}
           style={{ fontSize: '20px', fontWeight: '700', color: '#D97757', margin: 0, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-          Secure<span style={{ color: 'white', fontWeight: '600' }}>View</span>
+          Secure<span style={{ color: 'white', fontWeight: '600' }}>Pack</span>
         </h1>
 
         {/* Desktop nav links */}

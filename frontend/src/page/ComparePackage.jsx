@@ -374,7 +374,7 @@ export default function ComparePackage() {
           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(217,119,87,0.08)'; e.currentTarget.style.borderColor = '#D97757' }}
           onMouseLeave={e => { e.currentTarget.style.background = '#1a1a1a'; e.currentTarget.style.borderColor = 'rgba(217,119,87,0.4)' }}>
           <SiGooglegemini style={{ fontSize: '14px' }} />
-          SecureView AI
+          SecurePack AI
         </button>
       )}
 
