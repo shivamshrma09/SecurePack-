@@ -12,15 +12,18 @@ export const smartSearch = async (query) => {
 
   if (type === 'package') {
     const res = await fetch(`${BASE}/packages/?purl=${encodeURIComponent(query)}`)
+    if (!res.ok) throw new Error(`API error ${res.status}`)
     const data = await res.json()
     return { type: 'package', data }
   }
 
   const res = await fetch(`${BASE}/vulnerabilities/?vulnerability_id=${encodeURIComponent(query)}`)
+  if (!res.ok) throw new Error(`API error ${res.status}`)
   const data = await res.json()
 
   if (!data.results?.length) {
     const res2 = await fetch(`${BASE}/vulnerabilities/?alias=${encodeURIComponent(query)}`)
+    if (!res2.ok) throw new Error(`API error ${res2.status}`)
     const data2 = await res2.json()
     return { type: 'alias', data: data2 }
   }

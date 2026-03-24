@@ -94,8 +94,8 @@ export default function Home() {
       const type = detectQueryType(query)
       setSearchType(type)
       setResults(await smartSearch(query))
-    } catch {
-      setError('API request failed. Check your connection.')
+    } catch (err) {
+      setError(err.message || 'API request failed. Check your connection.')
     }
     setLoading(false)
   }
