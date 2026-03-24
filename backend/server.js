@@ -21,6 +21,21 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error:', err))
 
+const axios = require('axios')
+
+// Proxy for VulnerableCode API (CORS fix)
+app.get('/vulnerablecode/*', async (req, res) => {
+  try {
+    const path = req.params[0]
+    const query = new URLSearchParams(req.query).toString()
+    const url = `https://public.vulnerablecode.io/api/${path}${query ? '?' + query : ''}`
+    const response = await axios.get(url)
+    res.json(response.data)
+  } catch (err) {
+    res.status(err.response?.status || 500).json({ error: 'Proxy error' })
+  }
+})
+
 // POST /subscribe
 app.post('/subscribe', async (req, res) => {
   const { email, purl } = req.body

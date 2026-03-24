@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_BASE || 'https://public.vulnerablecode.io/api'
+const BASE = import.meta.env.VITE_API_BASE || `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'}/vulnerablecode`
 
 export const detectQueryType = (query) => {
   const q = query.trim().toLowerCase()
