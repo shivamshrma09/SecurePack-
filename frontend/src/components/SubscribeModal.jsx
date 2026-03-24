@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000'
+
 export default function SubscribeModal({ onClose }) {
   const [email, setEmail] = useState('')
   const [purl, setPurl] = useState('')
@@ -13,7 +15,7 @@ export default function SubscribeModal({ onClose }) {
     setStatus('loading')
     setMessage('')
     try {
-      const res = await fetch('http://localhost:4000/subscribe', {
+      const res = await fetch(`${BACKEND_URL}/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim(), purl: purl.trim() })
