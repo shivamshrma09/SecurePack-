@@ -10,10 +10,14 @@ const app = express()
 const PORT = process.env.PORT || 4000
 const MONGO_URI = process.env.MONGO_URI
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
+const ALLOWED_ORIGINS = FRONTEND_URL.split(',').map(u => u.trim())
 const VC_TOKEN = process.env.VULNERABLECODE_TOKEN
 
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: (origin, cb) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
+    cb(new Error('Not allowed by CORS'))
+  },
   methods: ['GET', 'POST'],
   credentials: true
 }))
@@ -23,7 +27,7 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error:', err))
 
-// Proxy for VulnerableCode API (CORS fix)
+// Proxy for VulnerableCode API (CORS fix) — GET
 app.get('/vulnerablecode/*', async (req, res) => {
   try {
     const path = req.params[0]
@@ -31,6 +35,20 @@ app.get('/vulnerablecode/*', async (req, res) => {
     const url = `https://public.vulnerablecode.io/api/${path}${query ? '?' + query : ''}`
     const response = await axios.get(url, {
       headers: { 'Authorization': `Token ${VC_TOKEN}` }
+    })
+    res.json(response.data)
+  } catch (err) {
+    res.status(err.response?.status || 500).json({ error: 'Proxy error' })
+  }
+})
+
+// Proxy for VulnerableCode API — POST (bulk_search etc)
+app.post('/vulnerablecode/*', async (req, res) => {
+  try {
+    const path = req.params[0]
+    const url = `https://public.vulnerablecode.io/api/${path}`
+    const response = await axios.post(url, req.body, {
+      headers: { 'Authorization': `Token ${VC_TOKEN}`, 'Content-Type': 'application/json' }
     })
     res.json(response.data)
   } catch (err) {
